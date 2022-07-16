@@ -1,0 +1,10 @@
+@import '../../style/variables.scss';
+
+.line-chart{
+    margin-top: 0;
+    margin-left: 50%;
+    border: none;
+    width: 50%;
+    background-color: $pink;
+    height: 2px;
+}

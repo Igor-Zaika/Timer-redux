@@ -13,26 +13,27 @@
     transition: 1s;
 }
 .modal_content {
-    height: 90px;
-    width: 450px;
+    height: 150px;
+    width: 700px;
     background-color: white;
     transform: scale(1);
-    z-index: 2;
+    z-index: 100;
 }
 .name {
-    padding: 10px;
+    padding: 20px;
     color: $pink;
+    font-size: 27px;
 }
 .description {
-    padding-left: 10px;
+    padding-left: 20px;
     color: grey;
-    font-size: 13px;
+    font-size: 20px;
 }
 .close {
     position: relative;
-    top: 18px;
-    left: 410px;
-    font-size: 10px;
+    top: 35px;
+    left: 630px;
     color: $blue;
     cursor: pointer;
+    font-weight: bold;
 }

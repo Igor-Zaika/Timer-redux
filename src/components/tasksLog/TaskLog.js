@@ -11,16 +11,19 @@ import Paper from '@mui/material/Paper';
 import { deepPurple, grey, lightBlue } from '@mui/material/colors';
 import { useDispatch, useSelector} from 'react-redux';
 
+import {setTusks} from '../../actions/index';
 
-import {deleteLog} from '../../actions/index';
+import './taskLog.scss'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	
 	[`&.${tableCellClasses.head}`]: {
 	  color: grey[500],
+	  fontSize: 20
 	},
 	[`&.${tableCellClasses.body}`]: {
 		color: deepPurple[900],
+		fontSize: 20
 	},
 }));
 
@@ -34,67 +37,69 @@ function createData(id, task, timeStart, timeEnd, timeSpend, info, remove) {
     return { id, task, timeStart, timeEnd, timeSpend, info, remove};
 }
 
-
-
-const TaskLogTable = () => {
-	const {dataTable} = useSelector(state => state);
+const TaskLog = () => {
+	const {tasks} = useSelector(state => state);
 	const dispatch = useDispatch();
-	const tableLog = JSON.parse(localStorage.getItem('allData'));
+	const tasksLogTable = JSON.parse(localStorage.getItem('tasksLog'));
 
 	const onDeleteLog = (id) => {
-		tableLog.forEach((item, i) => {
+		tasksLogTable.forEach((item, i) => {
 			if (item.id === id) {
-				tableLog.splice(i,1);
+				tasksLogTable.splice(i,1);
 			}
 		})
-		localStorage.setItem('allData', JSON.stringify(tableLog));
-		dispatch(deleteLog());
+		localStorage.setItem('tasksLog', JSON.stringify(tasksLogTable));
+		dispatch(setTusks(JSON.parse(localStorage.getItem('tasksLog'))));
 	}
 
-	const countTableLog = () => {
+	const countTasks = () => {
 		let rows = [];
-		for(let i = 0; i < dataTable.length; i++) {
-			rows.push(createData(dataTable[i].id, dataTable[i].name, dataTable[i].start, dataTable[i].end, dataTable[i].spend, 'INFO', 'DELETE'));
+
+		for(let i = 0; i < tasks.length; i++) {
+			rows.push(createData(tasks[i].id, tasks[i].name, tasks[i].start, tasks[i].end, tasks[i].spend, 'INFO', 'DELETE'));
 		}
 		return rows;
 	}
 
-	const rows = countTableLog();
+	const rows = countTasks();
 	
 	return(
-		<TableContainer component={Paper}>
-			<Table sx={{minWidth: 650}} aria-label="simple table">
-				<TableHead>
-					<TableRow>
-						<StyledTableCell align="center">№</StyledTableCell>
-						<StyledTableCell align="right">Task</StyledTableCell>
-						<StyledTableCell align="right">Time start</StyledTableCell>
-						<StyledTableCell align="right">Time end</StyledTableCell>
-						<StyledTableCell align="right">Time spend</StyledTableCell>
-						<StyledTableCell align="right" >Info</StyledTableCell>
-						<StyledTableCell align="center">Delete</StyledTableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{rows.map((row, i) => (
-						<StyledTableRow
-							key={row.id}
-							sx={{'&:last-child td,&:last-child th': {border: 0}}}>
-							<StyledTableCell align="center" component="th" scope="row" color='palette.secondary.dark'>
-								{i + 1}
-							</StyledTableCell>
-							<StyledTableCell align="right">{row.task}</StyledTableCell>
-							<StyledTableCell align="right">{row.timeStart}</StyledTableCell>
-							<StyledTableCell align="right">{row.timeEnd}</StyledTableCell>
-							<StyledTableCell align="right">{row.timeSpend}</StyledTableCell>
-							<StyledTableCell align="right" ><Link to={`/tableLog/${row.id}`}>{row.info}</Link></StyledTableCell>
-							<StyledTableCell align="center" onClick={() => onDeleteLog(row.id)}>{row.remove}</StyledTableCell>
-						</StyledTableRow>
-					))}
-				</TableBody>
-			</Table>
-		</TableContainer>
+		<>
+			<hr className="line-log" />
+			<TableContainer component={Paper}>
+				<Table sx={{minWidth: 650}} aria-label="simple table">
+					<TableHead>
+						<TableRow>
+							<StyledTableCell align="center">№</StyledTableCell>
+							<StyledTableCell align="center">Task</StyledTableCell>
+							<StyledTableCell align="center">Time start</StyledTableCell>
+							<StyledTableCell align="center">Time end</StyledTableCell>
+							<StyledTableCell align="center">Time spend</StyledTableCell>
+							<StyledTableCell align="center" >Info</StyledTableCell>
+							<StyledTableCell align="center">Delete</StyledTableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{rows.map((row, i) => (
+							<StyledTableRow
+								key={row.id}
+								sx={{'&:last-child td,&:last-child th': {border: 0}}}>
+								<StyledTableCell align="center" component="th" scope="row" color='palette.secondary.dark'>
+									{i + 1}
+								</StyledTableCell>
+								<StyledTableCell align="center">{row.task}</StyledTableCell>
+								<StyledTableCell align="center">{row.timeStart}</StyledTableCell>
+								<StyledTableCell align="center">{row.timeEnd}</StyledTableCell>
+								<StyledTableCell align="center">{row.timeSpend}</StyledTableCell>
+								<StyledTableCell align="center" ><Link to={`/${row.id}`}><button>{row.info}</button></Link></StyledTableCell>
+								<StyledTableCell align="center" onClick={() => onDeleteLog(row.id)}><button>{row.remove}</button></StyledTableCell>
+							</StyledTableRow>
+						))}
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</>
 	)
 }
 
-export default TaskLogTable;
+export default TaskLog;

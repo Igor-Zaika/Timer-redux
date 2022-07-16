@@ -28,9 +28,9 @@ export const offActiveModal = () => {
     }
 }
 
-export const addNewTask = (name) => {
+export const addNameTask = (name) => {
     return {
-        type: 'ADD_NEW_TASK',
+        type: 'ADD_NAME_TASK',
         payload: name
     }
 }
@@ -41,28 +41,16 @@ export const clearName = () => {
     }
 }
 
-export const showActiveLog = () => {
+export const setTusks = (arr) => {
     return {
-        type: 'SHOW_ACTIVE_LOG'
+        type: 'SET_TASKS',
+        payload: arr
     }
 }
 
-export const showActiveChart = () => {
+export const setGeneretedTasks = (tasks) => {
     return {
-        type: 'SHOW_ACTIVE_CHART'
+        type: 'SET_GENERETED_TASKS',
+        payload: tasks
     }
 }
-
-export const createLog = () => {
-    return {
-        type: 'CREATE_LOG',
-    }
-}
-
-export const deleteLog = () => {
-    return {
-        type: 'DELETE_LOG',
-    }
-}
-
-

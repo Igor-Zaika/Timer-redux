@@ -1,11 +1,11 @@
+import { calcTime } from "../func"
 
 const initialState = {
     nameTask: '',
     modal: false,
-    activeLine: '',
     time: Math.floor(Date.now() - localStorage.getItem('timerStart')),
     timerActive: false,
-    dataTable: JSON.parse(localStorage.getItem('allData'))
+    tasks: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -38,7 +38,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 modal: false
             }
-        case 'ADD_NEW_TASK':
+        case 'ADD_NAME_TASK':
             return {
                 ...state,
                 nameTask: action.payload
@@ -48,25 +48,20 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 nameTask: ''
             };    
-        case 'SHOW_ACTIVE_LOG':
+        case 'SET_TASKS':
+            const newTasks = action.payload.map(task => {
+                return {
+                    day: task.day,
+                    id: task.id,
+                    name: task.name,
+                    start: calcTime(task.start),
+                    end: calcTime(task.end),
+                    spend: calcTime(task.end - task.start),
+                }
+            })
             return {
                 ...state,
-                activeLine: 'log'
-            }  
-        case 'SHOW_ACTIVE_CHART':
-            return {
-                ...state,
-                activeLine: 'chart'
-            } 
-        case 'CREATE_LOG':
-            return {
-                ...state,
-                dataTable: JSON.parse(localStorage.getItem('allData')),
-            }
-        case 'DELETE_LOG':
-            return {
-                ...state,
-                dataTable: JSON.parse(localStorage.getItem('allData'))
+                tasks: newTasks
             };
         default: return state
     }
